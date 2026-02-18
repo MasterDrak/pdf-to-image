@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF a Imagen</title>
+  <style>
+    * { box-sizing: border-box; font-family: sans-serif; margin: 0; padding: 0; }
+    body { background: #1e1e2e; color: #cdd6f4; min-height: 100vh; padding: 24px; }
+    h1 { color: #89b4fa; font-size: 22px; margin-bottom: 6px; }
+    p.sub { color: #6c7086; font-size: 13px; margin-bottom: 20px; }
+
+    #dropzone {
+      border: 2px dashed #45475a; border-radius: 12px;
+      padding: 40px; text-align: center; cursor: pointer;
+      transition: border-color 0.2s; margin-bottom: 16px;
+    }
+    #dropzone:hover, #dropzone.over { border-color: #89b4fa; }
+    #dropzone p { color: #6c7086; font-size: 14px; }
+    #fileInput { display: none; }
+
+    .options { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+    .options label { font-size: 12px; color: #6c7086; display: flex; flex-direction: column; gap: 4px; }
+    .options select {
+      background: #313244; color: #cdd6f4;
+      border: 1px solid #45475a; border-radius: 6px;
+      padding: 5px 8px; font-size: 13px;
+    }
+
+    #convertBtn {
+      width: 100%; padding: 12px;
+      background: #89b4fa; color: #1e1e2e;
+      font-weight: bold; font-size: 15px;
+      border: none; border-radius: 8px; cursor: pointer;
+      margin-bottom: 16px;
+    }
+    #convertBtn:disabled { background: #45475a; color: #6c7086; cursor: not-allowed; }
+
+    #status { text-align: center; font-size: 13px; color: #a6e3a1; margin-bottom: 16px; }
+
+    #preview { display: flex; flex-direction: column; gap: 16px; }
+    .page-card {
+      background: #313244; border-radius: 10px; padding: 12px;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .page-card img { max-width: 100%; border-radius: 6px; }
+    .page-card span { font-size: 12px; color: #6c7086; }
+    .dl-btn {
+      padding: 6px 14px; background: #a6e3a1; color: #1e1e2e;
+      border: none; border-radius: 6px; cursor: pointer;
+      font-size: 13px; font-weight: bold;
+    }
+    #dlAllBtn {
+      width: 100%; padding: 10px;
+      background: #cba6f7; color: #1e1e2e;
+      font-weight: bold; font-size: 14px;
+      border: none; border-radius: 8px; cursor: pointer;
+      margin-bottom: 16px; display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>📄 PDF → Imagen</h1>
+  <p class="sub">Todo se procesa en tu navegador. Ningún archivo se sube a ningún servidor.</p>
+
+  <div id="dropzone">
+    <p>📂 Arrastra tu PDF aquí o haz clic para seleccionar</p>
+    <input type="file" id="fileInput" accept="application/pdf" multiple>
+  </div>
+
+  <div class="options">
+    <label>
+      Formato de salida
+      <select id="format">
+        <option value="png">PNG (sin pérdida)</option>
+        <option value="jpeg">JPG (más ligero)</option>
+      </select>
+    </label>
+    <label>
+      Resolución
+      <select id="dpi">
+        <option value="1">Normal (96 DPI)</option>
+        <option value="1.5">Alta (144 DPI)</option>
+        <option value="2" selected>Muy alta (192 DPI)</option>
+        <option value="3">Máxima (288 DPI)</option>
+      </select>
+    </label>
+  </div>
+
+  <button id="convertBtn" disabled>🖼️ Convertir</button>
+  <div id="status"></div>
+  <button id="dlAllBtn">⬇️ Descargar todas las páginas</button>
+  <div id="preview"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    // Apunta al worker de PDF.js
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
