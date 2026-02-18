@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace 'io.github.pdftoimagen'
     compileSdk 34
     defaultConfig {
         applicationId "io.github.pdftoimagen"
